@@ -50,6 +50,7 @@ in
     rofi
     bat
     anki
+    telegram-desktop
 	];
 
 programs.git = {

@@ -159,21 +159,23 @@
 };
 # Display scaling configuration
   services.xserver = {
-    dpi = 120;  # Adjust: 120 for smaller, 144 for larger, 168 for even larger
+    dpi = 141;  # Adjust: 120 for smaller, 144 for larger, 168 for even larger
     
     displayManager.sessionCommands = ''
       ${pkgs.xorg.xrdb}/bin/xrdb -merge <<EOF
-      Xft.dpi: 120
+      Xft.dpi: 141
       Xft.antialias: 1
       Xft.hinting: 1
       Xft.rgba: rgb
-      Xft.hintstyle: hintfull
+      Xft.hintstyle: hintlight
+      Xft.autohint: 0
+      Xft.lcdfilter: lcddefault
       EOF
       ${pkgs.xbindkeys}/bin/xbindkeys &
       ${pkgs.haskellPackages.greenclip}/bin/greenclip daemon &p
 
       
-      ${pkgs.xorg.xrandr}/bin/xrandr --output eDP1 --mode 1920x1080 --dpi 120
+      ${pkgs.xorg.xrandr}/bin/xrandr --output eDP1 --mode 1920x1080 --dpi 141
     '';
     
   };
@@ -183,7 +185,7 @@
     GDK_SCALE = "1";
     GDK_DPI_SCALE = "1";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "1.5";
+    QT_SCALE_FACTOR = "1";
   };
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
@@ -215,11 +217,25 @@
      pkgs.xfce.mousepad
      pkgs.haskellPackages.greenclip
    ];
-   fonts.packages = with pkgs; [
-	nerd-fonts.jetbrains-mono
-   ];
+   fonts = {
+  packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
+  fontconfig = {
+    enable = true;
+    antialias = true;
+    hinting = {
+      enable = true;
+      style = "slight";
+    };
+    subpixel = {
+      rgba = "rgb";
+      lcdfilter = "default";
+    };
+  };
+};
   
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -258,7 +274,7 @@
   # This value being lower than the current NixOS release does NOT mean your system is
   # out of date, out of support, or vulnerable.
   #
-  #:wq Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
