@@ -33,6 +33,11 @@
       };
     };
 
+  # Flatpak and gtk
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.config.common.default = "gtk";
+  services.flatpak.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;

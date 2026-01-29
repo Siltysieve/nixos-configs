@@ -51,6 +51,8 @@ in
     bat
     anki
     telegram-desktop
+    qbittorrent
+    feh
 	];
 
 programs.git = {

@@ -23,9 +23,9 @@
 						users.blue = import ./home.nix;
 						backupFileExtension = "backup";
 						};
-					      }
-					    ];
-					};
-				     };
+			    }
+				];
+			};
+		};
 
 }
