@@ -32,6 +32,17 @@
         
       };
     };
+  
+  #for Duplicate files
+  nix.settings.auto-optimise-store = true;
+
+  #auto delete files bootfiles
+  nix.gc = {
+  automatic = true;
+  dates = "weekly";
+  options = "--delete-older-than 30d";
+  };
+
 
   # Flatpak and gtk
   xdg.portal.enable = true;
