@@ -1,14 +1,15 @@
 {
 	description = "NixOS from Scratch";
-	inputs = {
+	
+  inputs = {
 		nixpkgs.url = "nixpkgs/nixos-25.11";
 		gestures.url = "github:riley-martin/gestures";
-		home-manager = { 
+		
+    home-manager = { 
 			url = "github:nix-community/home-manager/release-25.11";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
-
-       	};
+};
 
 	outputs = { self, nixpkgs, home-manager, ... }: {
 		nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
