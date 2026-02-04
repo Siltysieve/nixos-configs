@@ -32,7 +32,7 @@
         
       };
     };
-  
+
   #for Duplicate files
   nix.settings.auto-optimise-store = true;
 
@@ -47,7 +47,7 @@
   # Flatpak and gtk
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  xdg.portal.config.common.default = "gtk";
+  xdg.portal.config.common.default = "*";
   services.flatpak.enable = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -76,26 +76,24 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "intel" ];
-  services.xserver.deviceSection = ''
-    Option "DRI" "2"
-    Option "TearFree" "true"
-  '';
-  services.xserver = { 
-	enable = true;
-	autoRepeatDelay = 200;
-	autoRepeatInterval = 35;
-	windowManager.qtile.enable = true;
-      };
+
+  #hyprland
+  programs.hyprland = {
+      enable = true;
+      xwayland.enable = true;
+  };
   services.displayManager.ly.enable = true;
 
 
-  services.picom ={
+  #graphics config
+  hardware.graphics = {
     enable = true;
-    backend = "xrender";
-    fade = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-vaapi-driver
+      libva-vdpau-driver
+      libvdpau-va-gl
+    ];
   };
  
 
@@ -106,13 +104,17 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  #services.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
+  #sound pipewire
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
+
   hardware.bluetooth = {
   enable = true;
   powerOnBoot = true;
@@ -173,36 +175,24 @@
     };
   };
 };
-# Display scaling configuration
-  services.xserver = {
-    dpi = 141;  # Adjust: 120 for smaller, 144 for larger, 168 for even larger
-    
-    displayManager.sessionCommands = ''
-      ${pkgs.xorg.xrdb}/bin/xrdb -merge <<EOF
-      Xft.dpi: 141
-      Xft.antialias: 1
-      Xft.hinting: 1
-      Xft.rgba: rgb
-      Xft.hintstyle: hintlight
-      Xft.autohint: 0
-      Xft.lcdfilter: lcddefault
-      EOF
-      ${pkgs.xbindkeys}/bin/xbindkeys &
-      ${pkgs.haskellPackages.greenclip}/bin/greenclip daemon &p
 
-      
-      ${pkgs.xorg.xrandr}/bin/xrandr --output eDP1 --mode 1920x1080 --dpi 141
-    '';
-    
-  };
-  services.greenclip.enable = true;
-  # Set scaling environment variables
+# Environment variables for Wayland/Hyprland
   environment.sessionVariables = {
-    GDK_SCALE = "1";
-    GDK_DPI_SCALE = "1";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "1";
+    # Wayland
+    NIXOS_OZONE_WL = "1";
+    # Qt
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    # SDL
+    SDL_VIDEODRIVER = "wayland";
+    # Firefox
+    MOZ_ENABLE_WAYLAND = "1";
+    # General
+    XDG_SESSION_TYPE = "wayland";
   };
+
+
+
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
 
@@ -210,28 +200,29 @@
      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
      wget
      git
-     alacritty
-     flameshot
+     pkgs.kitty
      pkgs.librewolf
      pkgs.efibootmgr
      pkgs.vscodium
      pkgs.neofetch
-     pkgs.libinput-gestures  
-     pkgs.xdotool 
-     pkgs.wmctrl
      pkgs.xfce.thunar
      pkgs.p7zip
-     pkgs.brightnessctl
-     pkgs.xbindkeys
-     pkgs.xbindkeys-config
-     pkgs.playerctl
-     pkgs.pulseaudio
-     pkgs.xev
      pkgs.qalculate-gtk
      pkgs.w3m
      pkgs.brave
      pkgs.xfce.mousepad
-     pkgs.haskellPackages.greenclip
+     pkgs.cliphist
+     pkgs.wl-clip-persist
+     pkgs.wl-clipboard
+     pkgs.eza
+     pkgs.psmisc
+     pkgs.nwg-look
+     pkgs.adw-gtk3
+     pkgs.mpv
+     pkgs.kdePackages.gwenview
+
+
+
    ];
    fonts = {
   packages = with pkgs; [

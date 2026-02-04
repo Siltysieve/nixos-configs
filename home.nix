@@ -3,10 +3,11 @@ let
   dotfiles = "${config.home.homeDirectory}/nixos-dotfiles/config";
   create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configs = {
-    qtile = "qtile";
     nvim = "nvim";
     rofi = "rofi";
-    alacritty = "alacritty";
+    kitty = "kitty";      
+    hypr = "hypr";
+    zsh = "zsh";
   };
 in
 {
@@ -27,18 +28,11 @@ in
     recursive = true;
   }) 
   configs;
-	#xdg.configFile."qtile" = {
-  #  source = create_symlink "${dotfiles}/qtile/";
-  #  recursive = true;
-  #};
 
-	#xdg.configFile."nvim" = {
-  #  source = create_symlink "${dotfiles}/nvim/";
-  #};
-
-	#xdg.configFile."alacritty" = {
-  #  source = create_symlink "${dotfiles}/alacritty/";
-	#};
+programs.zsh.initContent = ''
+  source ~/.config/zsh/p10k.zsh
+'';
+home.file.".p10k.zsh".source = create_symlink "${dotfiles}/zsh/p10k.zsh";
   
   home.packages = with pkgs; [
 	  neovim
@@ -52,7 +46,6 @@ in
     anki
     telegram-desktop
     qbittorrent
-    feh
 	];
 
 programs.git = {
@@ -67,4 +60,68 @@ programs.git = {
   };
 
 
+# GTK theme for better integration
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+    };
+  };
+
+  # Qt theme
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk";
+  };
+
+
+  programs.zsh = {
+  enable = true;
+  enableCompletion = true;
+  autosuggestion.enable = true;
+  syntaxHighlighting.enable = true;
+
+  shellAliases = {
+    ll = "eza -l";
+    update = "sudo nixos-rebuild switch";
+  };
+  history.size = 10000;
+  oh-my-zsh = { # "ohMyZsh" without Home Manager
+    enable = true;
+    plugins = [ "git" ];
+    custom = "$HOME/.oh-my-zsh/custom"; # Points to your manual installs
+    theme = "powerlevel10k/powerlevel10k";
+  };
+  
+};
+
+
+programs.caelestia = {
+  enable = true;
+  systemd = {
+    enable = false; # if you prefer starting from your compositor
+    target = "graphical-session.target";
+    environment = [];
+  };
+  settings = {
+    bar.status = {
+      showBattery = false;
+    };
+    paths.wallpaperDir = "~/Downloads/Wallpapers/";
+  };
+  cli = {
+    enable = true; # Also add caelestia-cli to path
+    settings = {
+      theme.enableGtk = false;
+    };
+  };
+};
+
 }
+
+
