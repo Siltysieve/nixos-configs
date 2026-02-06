@@ -33,6 +33,8 @@
       };
     };
 
+  services.upower.enable = true;
+
   #for Duplicate files
   nix.settings.auto-optimise-store = true;
 
@@ -164,7 +166,7 @@
    
    programs.firefox.enable = true;
    home-manager.users.blue = {
-  xdg.mimeApps = {
+    xdg.mimeApps = {
     enable = true;
     defaultApplications = {
       "text/html" = "librewolf.desktop";
@@ -227,6 +229,9 @@
    fonts = {
   packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    rubik                     
+    nerd-fonts.caskaydia-cove  
+    material-symbols
   ];
   fontconfig = {
     enable = true;

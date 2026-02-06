@@ -8,6 +8,7 @@ let
     kitty = "kitty";      
     hypr = "hypr";
     zsh = "zsh";
+    caelestia = "caelestia";
   };
 in
 {
@@ -59,7 +60,6 @@ programs.git = {
     };
   };
 
-
 # GTK theme for better integration
   gtk = {
     enable = true;
@@ -79,6 +79,17 @@ programs.git = {
     platformTheme.name = "gtk";
   };
 
+  programs.caelestia = {
+  enable = true;
+  systemd = {
+    enable = false; # if you prefer starting from your compositor
+    target = "graphical-session.target";
+    environment = [];
+  };
+  cli = {
+    enable = true; # Also add caelestia-cli to path
+  };
+};
 
   programs.zsh = {
   enable = true;
@@ -98,28 +109,6 @@ programs.git = {
     theme = "powerlevel10k/powerlevel10k";
   };
   
-};
-
-
-programs.caelestia = {
-  enable = true;
-  systemd = {
-    enable = false; # if you prefer starting from your compositor
-    target = "graphical-session.target";
-    environment = [];
-  };
-  settings = {
-    bar.status = {
-      showBattery = false;
-    };
-    paths.wallpaperDir = "~/Downloads/Wallpapers/";
-  };
-  cli = {
-    enable = true; # Also add caelestia-cli to path
-    settings = {
-      theme.enableGtk = false;
-    };
-  };
 };
 
 }
