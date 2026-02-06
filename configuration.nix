@@ -228,6 +228,7 @@
    ];
    fonts = {
   packages = with pkgs; [
+    noto-fonts-cjk-sans
     nerd-fonts.jetbrains-mono
     rubik                     
     nerd-fonts.caskaydia-cove  
