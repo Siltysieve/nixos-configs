@@ -60,24 +60,7 @@ programs.git = {
     };
   };
 
-# GTK theme for better integration
-  gtk = {
-    enable = true;
-    theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.gnome-themes-extra;
-    };
-    iconTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
-    };
-  };
 
-  # Qt theme
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
-  };
 
   programs.caelestia = {
   enable = true;
@@ -99,7 +82,7 @@ programs.git = {
 
   shellAliases = {
     ll = "eza -l";
-    update = "sudo nixos-rebuild switch";
+    update = "sudo nixos-rebuild switch --flake ~/nixos-dotfiles#nixos";
   };
   history.size = 10000;
   oh-my-zsh = { # "ohMyZsh" without Home Manager
