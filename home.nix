@@ -59,8 +59,17 @@ programs.git = {
       init.defaultBranch = "main";
     };
   };
-
-
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+    iconTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+    };
+  };
 
   programs.caelestia = {
   enable = true;

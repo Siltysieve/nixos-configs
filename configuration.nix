@@ -84,7 +84,6 @@
       enable = true;
       xwayland.enable = true;
   };
-  services.displayManager.ly.enable = true;
 
 
   #graphics config
@@ -97,8 +96,8 @@
       libvdpau-va-gl
     ];
   };
- 
-
+  # Display Manager
+  services.displayManager.ly.enable = true;
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
@@ -138,6 +137,7 @@
     };
   };
 };
+
   services.blueman.enable = true;
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput = {
@@ -178,6 +178,8 @@
   };
 };
 
+
+
 # Environment variables for Wayland/Hyprland
   environment.sessionVariables = {
     # Wayland
@@ -192,12 +194,15 @@
     # General
     XDG_SESSION_TYPE = "wayland";
   };
-
-
-
+  programs.steam = {
+  enable = true;
+  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-
+   nixpkgs.config.allowUnfree = true;
    environment.systemPackages = with pkgs; [
      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
      wget
@@ -218,16 +223,14 @@
      pkgs.wl-clipboard
      pkgs.eza
      pkgs.psmisc
-     pkgs.nwg-look
      pkgs.adw-gtk3
      pkgs.mpv
      pkgs.kdePackages.gwenview
-
-
-
+     pkgs.vlc
    ];
    fonts = {
   packages = with pkgs; [
+    ipafont
     noto-fonts-cjk-sans
     nerd-fonts.jetbrains-mono
     rubik                     
