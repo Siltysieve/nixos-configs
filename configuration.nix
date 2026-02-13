@@ -78,6 +78,9 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
+  i18n.extraLocales = ["ja_JP.UTF-8/UTF-8"];
+
+  
 
   #hyprland
   programs.hyprland = {
@@ -213,7 +216,8 @@
      pkgs.vscodium
      pkgs.neofetch
      pkgs.xfce.thunar
-     pkgs.p7zip
+     pkgs._7zz
+     pkgs._7zz-rar
      pkgs.qalculate-gtk
      pkgs.w3m
      pkgs.brave
@@ -227,6 +231,12 @@
      pkgs.mpv
      pkgs.kdePackages.gwenview
      pkgs.vlc
+     pkgs.vesktop
+     pkgs.lutris
+     winetricks
+     wineWowPackages.waylandFull
+     pkgs.umu-launcher
+     pkgs.protonup-qt
    ];
    fonts = {
   packages = with pkgs; [
