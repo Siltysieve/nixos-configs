@@ -47,9 +47,22 @@
 
 
   # Flatpak and gtk
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  xdg.portal.config.common.default = "*";
+  xdg.portal = {
+  enable = true;
+  wlr.enable = true;  # Add this
+  extraPortals = [ 
+    pkgs.xdg-desktop-portal-hyprland
+    pkgs.xdg-desktop-portal-gtk
+  ];
+  config = {
+    common = {
+      default = ["hyprland" "gtk"];
+    };
+    hyprland = {
+      default = ["hyprland" "gtk"];
+    };
+  };
+};
   services.flatpak.enable = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -78,7 +91,21 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
-  i18n.extraLocales = ["ja_JP.UTF-8/UTF-8"];
+  
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocales = ["ja_JP.UTF-8/UTF-8"];
+    inputMethod = {
+      enable = true;
+      type = "fcitx5";
+      fcitx5.waylandFrontend = true; 
+      fcitx5.addons = with pkgs; [
+        fcitx5-mozc          # The Mozc engine
+        fcitx5-gtk           # Support for GTK applications
+        kdePackages.fcitx5-qt
+      ];
+    };
+  };
 
   
 
@@ -97,6 +124,8 @@
       intel-vaapi-driver
       libva-vdpau-driver
       libvdpau-va-gl
+      intel-compute-runtime
+      vpl-gpu-rt
     ];
   };
   # Display Manager
@@ -180,7 +209,14 @@
     };
   };
 };
-
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    pcre
+    libjpeg
+    libidn
+    # Add any missing dynamic libraries for unpackaged programs
+    # here, NOT in environment.systemPackages
+  ];
 
 
 # Environment variables for Wayland/Hyprland
@@ -234,9 +270,17 @@
      pkgs.vesktop
      pkgs.lutris
      winetricks
+     protontricks
      wineWowPackages.waylandFull
      pkgs.umu-launcher
      pkgs.protonup-qt
+     pkgs.steam-run
+     wf-recorder
+     xdg-desktop-portal-hyprland
+     grim
+     slurp
+     discord
+
    ];
    fonts = {
   packages = with pkgs; [
