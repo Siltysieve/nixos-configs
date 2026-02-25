@@ -280,7 +280,7 @@
      grim
      slurp
      discord
-
+     pkgs.kdePackages.filelight
    ];
    fonts = {
   packages = with pkgs; [

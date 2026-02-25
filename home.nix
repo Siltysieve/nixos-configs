@@ -21,8 +21,6 @@ in
 		shellAliases = {
 		   bluesilt = "echo that's me!";
 		};
-  
-
 	};
   xdg.configFile = builtins.mapAttrs 
   (name: subpath: {
