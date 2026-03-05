@@ -217,7 +217,7 @@
   },
   "border": {
     "thickness": 10,
-    "rounding": 25
+    "rounding": 0
   },
   "dashboard": {
     "enabled": true,

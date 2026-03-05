@@ -281,6 +281,12 @@
      slurp
      discord
      pkgs.kdePackages.filelight
+     pkgs.foliate
+     pkgs.unrar
+     pkgs.tesseract
+     pkgs.ocrmypdf
+     pkgs.kdePackages.okular
+     pkgs.epy
    ];
    fonts = {
   packages = with pkgs; [

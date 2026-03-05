@@ -47,13 +47,6 @@ home.file.".p10k.zsh".source = create_symlink "${dotfiles}/zsh/p10k.zsh";
     telegram-desktop
     qbittorrent
 	];
-home.sessionVariables = {
-  STEAM_DIR = "$HOME/.steam/steam";
-  PROTON_VERSION = "Proton Experimental";
-  PROTON_DIR_NAME = "Proton - Experimental";
-  WEBVIEW2_INSTALLER = "/home/blue/Downloads/MicrosoftEdgeWebView2RuntimeInstallerX64.exe";
-  LUNATRANSLATOR = "/home/blue/LunaTranslator_x64_win10/LunaTranslator.exe";
-};
 programs.git = {
     enable = true;
     settings = {
