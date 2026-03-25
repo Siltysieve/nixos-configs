@@ -146,7 +146,8 @@
     pulse.enable = true;
     jack.enable = true;
   };
-
+  #android emulator
+  virtualisation.waydroid.enable = true;
 
   hardware.bluetooth = {
   enable = true;
@@ -240,7 +241,8 @@
   localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
   # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
+  # You capkgs.android-tools
+
    nixpkgs.config.allowUnfree = true;
    environment.systemPackages = with pkgs; [
      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
@@ -287,6 +289,8 @@
      pkgs.ocrmypdf
      pkgs.kdePackages.okular
      pkgs.epy
+     pkgs.android-tools
+
    ];
    fonts = {
   packages = with pkgs; [
@@ -355,6 +359,7 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
-
+  #kernal version
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }
 
