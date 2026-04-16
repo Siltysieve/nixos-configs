@@ -30,9 +30,11 @@
         
       };
     };
-
+  
+  programs.gpu-screen-recorder.enable = true;
   services.upower.enable = true;
-
+  #usb drives
+  services.udisks2.enable = true;
   #for Duplicate files
   nix.settings.auto-optimise-store = true;
 
@@ -108,6 +110,7 @@
   #graphics config
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver
       intel-vaapi-driver
@@ -137,6 +140,7 @@
   };
   #android emulator
   virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.package = pkgs.waydroid-nftables;
 
   hardware.bluetooth = {
   enable = true;
@@ -279,6 +283,9 @@
      pkgs.kdePackages.okular
      pkgs.epy
      pkgs.android-tools
+     pkgs.lzip
+     pkgs.xfce.tumbler #thumbnail gen for thunar
+
 
    ];
    fonts = {

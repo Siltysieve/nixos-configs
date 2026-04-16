@@ -1718,3 +1718,16 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+# Re-apply Caelestia dynamic colors on startup
+cat ~/.local/state/caelestia/sequences.txt 2> /dev/null
+
+# Sync Hyprland window borders with Caelestia
+if [ -f ~/.local/state/caelestia/scheme.json ]; then
+    # Extract the 'primary' hex color and remove the '#'
+    HYPR_COLOR=$(grep -oP '"primary":\s*"\K#[A-Fa-f0-9]{6}' ~/.local/state/caelestia/scheme.json | sed 's/#//')
+
+    # Apply it to Hyprland's active border
+    if [ ! -z "$HYPR_COLOR" ]; then
+        hyprctl keyword general:col.active_border "rgb($HYPR_COLOR)"
+    fi
+fi
