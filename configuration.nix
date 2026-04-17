@@ -37,6 +37,15 @@
   services.udisks2.enable = true;
   #for Duplicate files
   nix.settings.auto-optimise-store = true;
+  #for iso files
+  services.dbus.packages = [ pkgs.cdemu-daemon ];
+  systemd.user.services.cdemu-daemon = {
+  description = "CDEmu Daemon";
+  serviceConfig = {
+    ExecStart = "${pkgs.cdemu-daemon}/bin/cdemu-daemon";
+    Restart = "on-failure";
+  };
+};
 
   #auto delete files bootfiles
   nix.gc = {
@@ -51,7 +60,6 @@
   enable = true;
   wlr.enable = true;  # Add this
   extraPortals = [ 
-    pkgs.xdg-desktop-portal-hyprland
     pkgs.xdg-desktop-portal-gtk
   ];
   config = {
@@ -64,10 +72,6 @@
   };
 };
   services.flatpak.enable = true;
-
-  # Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
   
   networking.hostName = "nixos"; # Define your hostname.
   
@@ -79,9 +83,6 @@
   # Set your time zone.
    time.timeZone = "Asia/Kolkata";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -113,9 +114,6 @@
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver
-      intel-vaapi-driver
-      libva-vdpau-driver
-      libvdpau-va-gl
       intel-compute-runtime
       vpl-gpu-rt
     ];
@@ -184,13 +182,12 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.blue = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "input" "video" ]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "input" "video" "cdrom" ]; # Enable ‘sudo’ for the user.
      packages = with pkgs; [
        tree
      ];
    };
    
-   programs.firefox.enable = true;
    home-manager.users.blue = {
     xdg.mimeApps = {
     enable = true;
@@ -245,7 +242,7 @@
      pkgs.librewolf
      pkgs.efibootmgr
      pkgs.vscodium
-     pkgs.neofetch
+     pkgs.fastfetch
      pkgs.xfce.thunar
      pkgs._7zz
      pkgs._7zz-rar
@@ -270,7 +267,6 @@
      pkgs.umu-launcher
      pkgs.protonup-qt
      pkgs.steam-run
-     wf-recorder
      xdg-desktop-portal-hyprland
      grim
      slurp
@@ -278,14 +274,14 @@
      pkgs.kdePackages.filelight
      pkgs.foliate
      pkgs.unrar
-     pkgs.tesseract
-     pkgs.ocrmypdf
      pkgs.kdePackages.okular
-     pkgs.epy
      pkgs.android-tools
      pkgs.lzip
      pkgs.xfce.tumbler #thumbnail gen for thunar
-
+     pkgs.ccd2iso
+     pkgs.mdf2iso
+     cdemu-client 
+     pkgs.gcdemu
 
    ];
    fonts = {
@@ -355,11 +351,13 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
-  #kernal version
+  boot.extraModulePackages = [ config.boot.kernelPackages.vhba ];
+  #kernel version
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelModules = [ "ntsync" ];
+  boot.kernelModules = [ "ntsync" "vhba" ];
   services.udev.extraRules = ''
   KERNEL=="ntsync", MODE="0666"
+  KERNEL=="vhba_ctl", MODE="0660", GROUP="cdrom"
   '';
 }
 

@@ -16,12 +16,7 @@ in
 	home.username = "blue";
 	home.homeDirectory = "/home/blue";
 	home.stateVersion = "25.11";
-	programs.bash = {
-		enable = true;
-		shellAliases = {
-		   bluesilt = "echo that's me!";
-		};
-	};
+
   xdg.configFile = builtins.mapAttrs 
   (name: subpath: {
     source = create_symlink "${dotfiles}/${subpath}";
@@ -108,7 +103,7 @@ services.udiskie = {
         # https://github.com/nix-community/home-manager/issues/632
         program_options = {
             # replace with your favorite file manager
-            file_manager = "${pkgs.nemo-with-extensions}/bin/nemo";
+            file_manager = "${pkgs.xfce.thunar}/bin/thunar";
         };
     };
 };

@@ -3,7 +3,6 @@
 	
   inputs = {
 		nixpkgs.url = "nixpkgs/nixos-25.11";
-		gestures.url = "github:riley-martin/gestures";
 		
     home-manager = { 
 			url = "github:nix-community/home-manager/release-25.11";
